@@ -22,7 +22,7 @@ int contar(vector<int> fila, int x) {
 
 int procurar(vector<int> fila, int x) {
     int pos = -1;
-    for(int i = 0; i < fila.size(); i++) {
+    for(int i = 0, max = fila.size(); i < max; i++) {
         pos = fila[i] == x ? i : -1;
         break;
     }
@@ -30,7 +30,7 @@ int procurar(vector<int> fila, int x) {
 }
 
 int procurar_valor(vector<int> fila, int x, int inicio) {
-    if (inicio > fila.end()) {
+    if (inicio >= fila.size()) {
         cout << "posicao inicial invalida" << endl;
         return -1;
     }
@@ -53,7 +53,7 @@ int procurar_menor(vector<int> fila) {
 int procurar_pos_menor(vector<int> fila) {
     int MIN = INT_MAX;
     int pos = -1;
-    for(int i = 0; i < fila.size(); i++)
+    for(int i = 0, max = fila.size(); i < max; i++)
         if(fila[i] < MIN) {
             MIN = fila[i];
             pos = i;
@@ -62,14 +62,14 @@ int procurar_pos_menor(vector<int> fila) {
 }
 
 int procurar_pos_menor_apartir(vector<int> fila, int inicio) {
-    if (inicio > fila.end()) {
+    if (inicio >= fila.size()) {
         cout << "posicao inicial invalida" << endl;
         return -1;
     }
 
     int MIN = INT_MAX;
     int pos = -1;
-    for(int i = inicio; i < fila.size(); i++)
+    for(int i = 0, max = fila.size(); i < max; i++)
         if(fila[i] < MIN) {
             MIN = fila[i];
             pos = i;
@@ -80,7 +80,7 @@ int procurar_pos_menor_apartir(vector<int> fila, int inicio) {
 int procurar_melhor_pos_se(vector<int> fila) {
     int MIN = INT_MAX;
     int pos = -1;
-    for(int i = 0; i < fila.size(); i++)
+    for(int i = 0, max = fila.size(); i < max; i++)
         if(fila[i] < MIN && fila[i] > 0) {
             MIN = fila[i];
             pos = i;
@@ -93,7 +93,7 @@ int procurar_melhor_pos_se(vector<int> fila) {
 float calcular_stress_medio(vector<int> fila) {
     int total = 0;
 
-    for(int i = 0; i < fila.size(); i++)
+    for(int i = 0, max = fila.size(); i < max; i++)
         total += abs(fila[i]);
 
     return (total / fila.size());
@@ -103,7 +103,7 @@ string mais_homens_ou_mulheres(vector<int> fila) {
     int totalHomens = 0;
     int totalMulheres = 0;
 
-    for(int i = 0; i < fila.size(); i++) {
+    for(int i = 0, max = fila.size(); i < max; i++) {
         if(fila[i] > 0)
             totalHomens++;
         else
@@ -123,19 +123,19 @@ string qual_metade_eh_mais_estressada(vector<int> fila) {
     for(int i = 0; i < primeiraMetade; i++)
         stressPrimeiraMetade += (abs(fila[i]));
 
-    for(int i = segundaMetade; i < fila.size(); i++)
+    for(int i = 0, max = fila.size(); i < max; i++)
         stressSegundaMetade += (abs(fila[i]));
 
     return stressPrimeiraMetade > stressSegundaMetade 
-                                ? stressPrimeiraMetade
-                                : stressSegundaMetade;
+                                ? "Primeira metade"
+                                : "Segunda metade";
 }
 
 string homens_sao_mais_estressados_que_mulheres(vector<int> fila) {
     int totalHomens = 0;
     int totalMulheres = 0;
 
-    for(int i = 0; i < fila.size(); i++) {
+    for(int i = 0, max = fila.size(); i < max; i++) {
         if(fila[i] > 0)
             totalHomens += fila[i];
         else
