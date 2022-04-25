@@ -150,5 +150,5 @@ int main() {
     vector<int> vec = {1, 8, 7, -10, -5, 4, -3, -2};
     bool deuBom = existe(vec, 8);
     cout << deuBom;
-
+    
 }
