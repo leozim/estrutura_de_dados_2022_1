@@ -1,0 +1,1 @@
+g++ -Wall -Wextra -Werror -o compile_code .\compile_code.cpp
