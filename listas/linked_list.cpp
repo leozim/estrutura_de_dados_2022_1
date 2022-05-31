@@ -22,8 +22,8 @@ struct LinkedList
 
     LinkedList() 
     {
-        this->headPtr = new Node(0);
-        this->tailPtr = new Node(0);
+        this->headPtr = new Node();
+        this->tailPtr = new Node();
 
         this->headPtr->nextPtr = this->tailPtr;
         this->tailPtr->prevPtr = this->headPtr;
