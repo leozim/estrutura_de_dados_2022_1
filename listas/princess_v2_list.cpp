@@ -22,7 +22,7 @@ void matar(list<int> &lista, int espada){
 
     while (*it != espada) it++;
 
-    if (it == lista.end() && *it > 0) lista.front();
+    if (it == lista.end() && *it > 0) lista.pop_front();
     else if (it == lista.begin() && *it < 0) lista.pop_back();
     else if (*it > 0) lista.remove(*next(it));
     else if (*it < 0) lista.remove(*prev(it));

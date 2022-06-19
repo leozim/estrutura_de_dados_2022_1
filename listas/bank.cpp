@@ -21,6 +21,16 @@ struct Cliente
         return nome + ":" + to_string(documentos) + ":" + to_string(paciencia);
     }
 
+    bool hasDocuments()
+    {
+        return documentos > 0;
+    }
+
+    bool hasPaciencia()
+    {
+        return paciencia > 0;
+    }
+
 };
 
 struct Banco
@@ -41,33 +51,73 @@ struct Banco
         this->filaEntrada.push_front(clientePtr);
     }
 
-    bool isEmpty()
+    bool caixaIsEmpty()
     {
         return caixas.size() > 0;
     }
 
+    bool filaEntradaIsEmpty()
+    {
+        return filaEntrada.size() > 0;
+    }
+
+    bool filaSaidaIsEmpty()
+    {
+        return filaSaida.size() > 0;
+    }
+
     void tic()
     {
-        /*
-        para todos os clientes na fila de saida
-            remova cliente da fila
+        if ( !filaSaidaIsEmpty() )
+        {
+            for (auto it = this->filaSaida.begin(), end = this->filaSaida.end(); it != end; it++)
+            {
+                this->filaSaida.erase(it);
+            }
+        }
 
-        para todos os caixas
-            se existe um cliente nesse caixa
-                se o cliente documentos a serem processados
-                    processe um documento desse cliente
-                se não
-                    mova cliente para fila de saída
-            se não
-                se houver cliente na fila de entrada
-                    pegue um cliente da fila de entrada e coloque no caixa
+        if ( !caixaIsEmpty() )
+        {
+            for (auto it = this->caixas.begin(), end = this->caixas.end(); it != end; it++)
+            {
+                Cliente *cliente = *it;
+                if (cliente->hasDocuments())
+                    documentosRecebidos = cliente->documentos;
+                else
+                {
+                    this->filaSaida.push_back(*it);
+                    this->caixas.erase(it);
+                }
+            }
+        }
 
-        para cada cliente da fila de entrada
-            se a paciencia desse cliente for maior que zero
-                decremente um na paciencia
-            se não
-                ponha esse cliente na fila de saída
-        */
+        else
+        {
+            if (!this->filaEntradaIsEmpty())
+            {
+                for (auto it = this->filaEntrada.begin(), end = this->filaEntrada.end(); it != end; it++)
+                {
+                    this->caixas.push_back(*it);
+                }
+            }
+        }
+
+        if (!this->filaEntradaIsEmpty())
+        {
+            for (auto it = this->filaEntrada.begin(), end = this->filaEntrada.end(); it != end; it++)
+                {
+                    Cliente *cliente = *it;
+                    if (cliente->hasPaciencia())
+                        cliente->paciencia--;
+                    else
+                    {
+                        this->filaSaida.push_back(cliente);
+                        this->filaEntrada.erase(it);
+                    }
+                        
+                }
+        }
+
     }
 
     void show()
@@ -78,6 +128,7 @@ struct Banco
         cout << "\nna fila de entrada :{ ";
         for (auto fila: this->filaEntrada)
             cout << fila->str() << " ";
+        cout << "}";
 
         cout << "\nna fila de saida :{ ";
         for (auto fila : this->filaSaida)
@@ -131,7 +182,7 @@ int main()
 
         else if (comando == "finish")
         {
-            while(!banco.isEmpty())
+            while(!banco.caixaIsEmpty())
                 banco.tic();
             
             cout << "recebido: " << banco.documentosRecebidos << endl;
