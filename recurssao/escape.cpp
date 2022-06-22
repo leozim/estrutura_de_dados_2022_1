@@ -64,11 +64,6 @@ void furar(matrix& mat, Pos pos, Pos end)
         return;
     else if (mat[l][c] == WALL || mat[l][c] == PATH)
         return;
-    else if (l == end.linha && c == end.coluna)
-    {
-        mat[l][c] = PATH;
-        return;
-    }
 
     mat[l][c] = PATH;
 
