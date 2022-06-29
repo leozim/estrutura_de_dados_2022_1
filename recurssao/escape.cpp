@@ -16,7 +16,7 @@ struct Pos
     int linha;
     int coluna;
 
-    Pos(int l, int c) : linha(l), coluna(c)
+    Pos(int l = 0, int c = 0) : linha(l), coluna(c)
     { }
 };
 
@@ -34,44 +34,58 @@ void show(matrix& mat)
     getchar();
 }
 
-void path(matrix& mat, Pos start, Pos end)
+pair<Pos, Pos> path(matrix& mat)
 {
+    Pos start;
+    Pos end;
     for (int i = 0, size = mat.size(); i < size; i++)
         for (int k = 0, kSize = mat[0].size(); k < kSize; k++)
         {
             if (mat[i][k] == 'I')
             {
-                mat[i][k] = DRILLED;
                 start = Pos(i, k);
             }
 
             if (mat[i][k] == 'F')
             {
-                mat[i][k] == DRILLED;
                 end = Pos(i, k);
             }
 
         }
 
+    return make_pair(start, end);
+
 }
 
-void furar(matrix& mat, Pos pos, Pos end)
+bool furar(matrix& mat, Pos pos, Pos end)
 {
     int l = pos.linha;
     int c = pos.coluna;
 
-    if (l < 0 || l >= mat.size() || c < 0 || c >= mat[0].size())
-        return;
-    else if (mat[l][c] == WALL || mat[l][c] == PATH)
-        return;
+    if (mat[l][c] != DRILLED)
+        return false;
+    if (l == end.linha && c == end.coluna)
+    {
+        mat[l][c] = PATH;
+        return true;
+    }
 
     mat[l][c] = PATH;
+    for (auto neighbor : get_neib(pos))
+    {
+        if (furar(mat, neighbor, end))
+            return true;
+    }
 
-    furar(mat, Pos(l, c - 1), end);
-    furar(mat, Pos(l - 1, c), end);
-    furar(mat, Pos(l, c + 1), end);
-    furar(mat, Pos(l + 1, c), end);
+    mat[l][c] = DRILLED;
+    return false;
 
+}
+
+void escape(matrix& mat)
+{
+    pair<Pos, Pos> par = path(mat);
+    furar(mat, par.first, par.second);
 }
 
 int main()
@@ -92,8 +106,7 @@ int main()
 
     show(mat);
     cout << endl;
-    path(mat, Pos(5, 3), Pos(9, 5));
-    furar(mat, Pos(1, 1), Pos(9, 5));
+    escape(mat);
     show(mat);
 
 }
