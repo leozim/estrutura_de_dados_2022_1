@@ -114,7 +114,6 @@ struct vector
     int * end()
     {
         return _data + _size;
-        // return &_data[_size];
     }
 
 };
